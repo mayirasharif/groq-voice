@@ -4,9 +4,9 @@ import pyaudio
 from enum import Enum
 
 load_dotenv()
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+ELEVENLABS_API_KEY = "sk_5887cb7da6c284243b300f870c074ac74a7714ee46a062af"
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_KEY = "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"
 
 if not ELEVENLABS_API_KEY:
     raise ValueError("ELEVENLABS_API_KEY environment variable not set")

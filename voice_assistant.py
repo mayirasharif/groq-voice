@@ -8,7 +8,9 @@ from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
 from agent import Agent
 from pydub import AudioSegment
-from openai import OpenAI
+import openai
+from gtts import gTTS
+from playsound import playsound
 from groq import Groq
 from config import (
     ELEVENLABS_API_KEY,
@@ -34,7 +36,8 @@ class VoiceAssistant:
         self.agent = Agent()
         self.voice_id = voice_id
         self.xi_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
-        self.oai_client = OpenAI(api_key=OPENAI_API_KEY)
+        openai.api_key = OPENAI_API_KEY
+        self.oai_client = openai
         self.g_client = Groq(api_key=GROQ_API_KEY)
 
     def is_silence(self, data):
@@ -232,8 +235,18 @@ class VoiceAssistant:
         start = time()
         response = self.agent.chat(query)
         end = time()
+        tts = gTTS(text=response, lang='en')
+        tts.save("output.mp3")
+        playsound("output.mp3")
         print(f"Response: {response}\nResponse Time: {end - start}")
+
+        print('work saved!')
         return response
+    
+    def spoken_speech(self, text):
+        tts = gTTS(text=text, lang='en')
+        tts.save("output.mp3")
+        print('work saved!')
 
     def run(self):
         """
@@ -248,9 +261,13 @@ class VoiceAssistant:
             response_text = self.chat(text)
             
             # TTS
+            """
             audio_stream = self.text_to_speech(response_text)
             audio_iterator = self.audio_stream_to_iterator(audio_stream)
             self.stream_audio(audio_iterator)
+            """
+    
+    
 
 if __name__ == "__main__":
     assistant = VoiceAssistant()
